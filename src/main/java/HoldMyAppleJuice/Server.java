@@ -1,10 +1,13 @@
 package HoldMyAppleJuice;
 
-import HoldMyAppleJuice.client.Client;
+
 import HoldMyAppleJuice.client.SyncUser;
 import HoldMyAppleJuice.client.discord.DiscordUser;
 import HoldMyAppleJuice.client.minecraft.MinecraftPlayer;
-import HoldMyAppleJuice.communication.ServerMessage;
+
+import ProtocolPackage.Client;
+import ProtocolPackage.Protocol;
+import ProtocolPackage.communication.ServerMessage;
 
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
@@ -30,12 +33,12 @@ public class Server
             {
                 if (SyncUser.userIsSynced(user))
                 {
-                    return new ServerMessage(Client.DISCORD, ServerMessage.SYNC_SUCCESS, "");
+                    return new ServerMessage(Client.DISCORD, Protocol.SYNC_SUCCESS.toString(), "");
                 }
                 SyncUser.sync(player, user);
-                return new ServerMessage(Client.DISCORD, ServerMessage.ALREADY_SYNCED, "");
+                return new ServerMessage(Client.DISCORD, Protocol.ALREADY_SYNCED.toString(), "");
             }
         }
-        return new ServerMessage(Client.DISCORD, ServerMessage.WRONG_CODE, "");
+        return new ServerMessage(Client.DISCORD, Protocol.WRONG_CODE.toString(), "");
     }
 }

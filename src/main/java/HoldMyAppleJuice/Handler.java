@@ -1,7 +1,8 @@
 package HoldMyAppleJuice;
 
-import HoldMyAppleJuice.communication.ReceivedMessage;
-import HoldMyAppleJuice.communication.ServerMessage;
+import ProtocolPackage.communication.ClientMessage;
+
+import ProtocolPackage.communication.ServerMessage;
 
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public abstract class Handler
         clientMessageHandlerList.add(this);
     }
 
-    public static ArrayList<ServerMessage> handleAll(ReceivedMessage message, SocketChannel client)
+    public static ArrayList<ServerMessage> handleAll(ClientMessage message, SocketChannel client)
     {
         ArrayList<ServerMessage> result = new ArrayList<>();
         for (Handler handler : clientMessageHandlerList)
@@ -29,6 +30,6 @@ public abstract class Handler
         return result;
     }
 
-    public abstract ServerMessage handle(ReceivedMessage message, SocketChannel client);
+    public abstract ServerMessage handle(ClientMessage message, SocketChannel client);
 
 }

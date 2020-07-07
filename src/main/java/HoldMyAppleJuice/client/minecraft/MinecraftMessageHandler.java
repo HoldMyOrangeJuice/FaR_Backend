@@ -1,51 +1,53 @@
 package HoldMyAppleJuice.client.minecraft;
 
 import HoldMyAppleJuice.*;
-import HoldMyAppleJuice.client.Client;
+
 import HoldMyAppleJuice.client.SyncUser;
-import HoldMyAppleJuice.communication.ClientMessage;
-import HoldMyAppleJuice.communication.ReceivedMessage;
-import HoldMyAppleJuice.communication.ServerMessage;
+
+import ProtocolPackage.Client;
+import ProtocolPackage.Protocol;
+import ProtocolPackage.communication.ClientMessage;
+import ProtocolPackage.communication.ServerMessage;
 
 import java.nio.channels.SocketChannel;
 
 public class MinecraftMessageHandler extends Handler
 {
-    public ServerMessage handle(ReceivedMessage message, SocketChannel client)
+    public ServerMessage handle(ClientMessage message, SocketChannel client)
     {
-        if (message.getHeader().equals(ClientMessage.HANDSHAKE))
+        if (message.getHeader().equals(Protocol.HANDSHAKE))
         {
             Server.registerConsumer(Client.get(message.getValue(0)), client);
         }
-        if (message.getHeader().equals(ClientMessage.PLAYER_JOINED))
+        if (message.getHeader().equals(Protocol.PLAYER_JOINED))
         {
             String uuid = message.getValue(0);
             MinecraftPlayer.getOrCreate(uuid).join();
         }
-        if (message.getHeader().equals(ClientMessage.PLAYER_LEFT))
+        if (message.getHeader().equals(Protocol.PLAYER_LEFT))
         {
             String uuid = message.getValue(0);
             MinecraftPlayer.getOrCreate(uuid).leave();
         }
 
-        if (message.getHeader().equals(ClientMessage.PLUGIN_GENERATED_CODE))
+        if (message.getHeader().equals(Protocol.PLUGIN_GENERATED_CODE))
         {
             String uuid = message.getValue(0);
             String code = message.getValue(1);
             MinecraftPlayer player = MinecraftPlayer.getOrCreate(uuid);
             player.code = code;
         }
-        if (message.getHeader().equals(ClientMessage.IS_PLAYER_REGISTERED))
+        if (message.getHeader().equals(Protocol.IS_PLAYER_REGISTERED))
         {
             String uuid = message.getValue(0);
             MinecraftPlayer player = MinecraftPlayer.getOrCreate(uuid);
             if (SyncUser.playerIsSynced(player))
             {
-                return new ServerMessage(Client.PLUGIN, ServerMessage.PLAYER_IS_REGISTERED, "true");
+                return new ServerMessage(Client.PLUGIN, Protocol.PLAYER_IS_REGISTERED, "true");
             }
             else
             {
-                return new ServerMessage(Client.PLUGIN, ServerMessage.PLAYER_IS_REGISTERED, "false");
+                return new ServerMessage(Client.PLUGIN, Protocol.PLAYER_IS_REGISTERED, "false");
             }
 
         }

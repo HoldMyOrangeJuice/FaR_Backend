@@ -4,9 +4,10 @@ import HoldMyAppleJuice.*;
 import HoldMyAppleJuice.client.Client;
 import HoldMyAppleJuice.client.SyncUser;
 import HoldMyAppleJuice.client.minecraft.MinecraftPlayer;
-import HoldMyAppleJuice.communication.ClientMessage;
 import HoldMyAppleJuice.communication.ReceivedMessage;
 import HoldMyAppleJuice.communication.ServerMessage;
+import ProtocolPackage.DiscordUserStatus;
+import ProtocolPackage.Protocol;
 
 import java.nio.channels.SocketChannel;
 
@@ -77,7 +78,7 @@ public class DiscordMessageHandler extends Handler {
             DiscordUser.getOrCreate(id).unmute_headphones();
         }
 
-        if (message.getHeader().equals(ClientMessage.USER_SEND_CODE.toString()))
+        if (message.getHeader().equals(Protocol.USER_SEND_CODE.toString()))
         {
             String id = message.getValue(0);
             String code = message.getValue(1);

@@ -1,8 +1,9 @@
 package HoldMyAppleJuice;
 
-import HoldMyAppleJuice.client.Client;
-import HoldMyAppleJuice.communication.ReceivedMessage;
-import HoldMyAppleJuice.communication.ServerMessage;
+
+import ProtocolPackage.Client;
+import ProtocolPackage.communication.ClientMessage;
+import ProtocolPackage.communication.ServerMessage;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -74,7 +75,7 @@ public class Main {
                     client.read(crunchifyBuffer);
                     String result = new String(crunchifyBuffer.array()).trim();
                     log("Message received: " + result);
-                    ReceivedMessage message = new ReceivedMessage(result);
+                    ClientMessage message = new ClientMessage(result);
                     ArrayList<ServerMessage> serverMessageBuffer = Handler.handleAll(message, client);
 
                     for (ServerMessage serverMessage : serverMessageBuffer)
